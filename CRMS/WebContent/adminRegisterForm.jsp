@@ -20,43 +20,28 @@
 
 	<div class="register-card container-fluid p-5 mt-5">
 
-		<form name="myForm"  action="adminConnection"
-			method="post">
+		<form id="myForm" name="myForm" method="post">
 			<h1>
 				Admin Registration From<span class="fa fa-user-plus ml-2"></span>
 			</h1>
-			<div class="alert alert-success" role="alert"
-				id="successfully-registered">
-				<strong>Success! </strong> Successfully registered.
-			</div>
-
-			<div class="alert alert-danger" role="alert" id="wrong-details-alert">
-				<strong>ERROR!</strong> Please enter your details properly.
-			</div>
-
 			<div class="row mt-4 mb-4">
 				<div class="col form-group">
-					<label for="firstName">User Name</label> <input type="text"
-						class="form-control" placeholder="User name" name="userName"
-						id="UserName" pattern="[a-zA-Z]*"
-						oninvalid="setCustomValidity('Please enter alphabets only. ')"
-						maxlength="20">
+					<label for="firstName">Admin Name</label> <input type="text"
+						class="form-control" placeholder="User name" name="adminName"
+						id="adminName" 
+						maxlength="20" required >
 				</div>
 
 				<div class="col form-group">
-					<label for="email"> Email</label> <input type="email"
-						class="form-control" placeholder="Enter email" name="email"
-						id="email" maxlength="30">
+					<label for="email">Admin Email</label> <input type="email"
+						class="form-control" placeholder="Enter email" name="adminEmail"
+						id="adminEmail" maxlength="30" required >
 				</div>
 			</div>
-			<div class="alert alert-danger" role="alert" id="invalid-name">
-				<strong>ERROR!</strong> Invalid email.
-			</div>
-
 			<div class="mt-4 mb-4 form-group">
-				<label for="inputpassword">Password</label> <input type="password"
-					class="form-control" id="inputpassword" name="inputPassword"
-					placeholder="Enter password" maxlength="12">
+				<label for="inputpassword">Password</label> <input type="adminPassword"
+					class="form-control" id="adminPassword" name="adminPassword"
+					placeholder="Enter password"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" oninvalid="setCustomValidity('Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters ')" maxlength="12" required >
 
 
 			</div>
@@ -64,15 +49,18 @@
 
 			<div class="mt-4 mb-4 form-group">
 				<label for="inputPhone">Phone</label> <input type="phone"
-					class="form-control" id="inputPhone" name="inputPhone"
+					class="form-control" id="adminPhone" name="adminPhone"
 					placeholder="xxx-xxx-xxxx" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-					maxlength="12"> <small>Format : 123-456-7891</small>
+					maxlength="12" required > <small>Format : 123-456-7891</small>
 
 			</div>
 
 			<button type="submit" class="btn btn-success ">
 				Register <span class="fa fa-send-o"></span>
 			</button>
+			<a href="adminLogin.jsp">
+				<button type="button" class="btn btn-primary ">Sign In<span class="fa fa-user-plus ml-2"></span></button>
+			</a>
 		</form>
 	</div>
 
@@ -104,30 +92,53 @@
 
 	<!-- JavaScript -->
 	<script>
-		function submitForm() {
-			var userName = document.forms["myForm"]["UserName"].value;
-			var email = document.forms["myForm"]["email"].value;
-			var inputPassword = document.forms["myForm"]["inputpassword"].value;
-			var inputPhone = document.forms["myForm"]["inputPhone"].value;
-
-			//var regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
-
-			if (userName == "" || email == "" || inputPassword == ""
-					|| inputPhone == "") {
+	 $(document).ready(function(){
+		 $("#myForm").submit(function(){
+			 event.preventDefault();
+			 var adminName = $("#adminName").val();
+			 var adminEmail = $("#adminEmail").val();
+			 var adminPassword = $("#adminPassword").val();
+			 var adminPhone = $("#adminPhone").val();
+			 
+			 if(adminName == "" || adminEmail == "" || adminPassword == "" ||  adminPhone == "" ) {
 				//document.getElementById("wrong-details-alert").style.display = "block";
 				alert("Please enter the details properly");
-			} else {
-				alert("Successfully registered");
-				//document.getElementById("successfully-registered").style.display = "block";
-			}
-
+			 }
+			 else {
+				 console.log("go");
+					$.ajax({
+						url: "AdminInsertServlet",
+						type: "POST",
+						data: {
+							"adminName": adminName,
+							"adminEmail": adminEmail,
+							"adminPassword": adminPassword,
+							"adminPhone": adminPhone
+						},
+						success : function(data) {
+							alert("Data stored successfully. Please refresh the page");
+							window.location.href = "http://localhost:8080/CRMS/adminLogin.jsp";
+						},
+						  error: function () {
+						        console.log("error storing");
+						        alert(" Error! Not able to register ");
+						    }
+					});
+				 //document.getElementById("successfully-registered").style.display = "block";
+			 }
+			 
 			/* else if(!regName.test(firstName) || !regName.test(lastName)){
 				 //alert("Invalid name");
 				 document.getElementById("invalid-name").style.display = "block";
 				}*/
+			 
+			 
+		 }
+		 );
+	 });
+	 
+	 </script>
 
-		}
-	</script>
 
 
 </body>

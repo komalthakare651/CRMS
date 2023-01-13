@@ -25,7 +25,7 @@ h1{
 	font-weight: 700;
 }
 .alert-danger, .alert-success{
-	display: none;
+	display: block;
 }
 strong {
 	font-weight: 600;

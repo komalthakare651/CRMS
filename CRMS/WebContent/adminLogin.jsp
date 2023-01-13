@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+	<%@page import="entity.*;" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,37 +18,47 @@
 	<%@include file="navbar.jsp" %>
 	
 	 <div class="register-card container-fluid p-5 mt-5 "> 	
-		<form name="myForm" onsubmit="submitForm()" action="#">
+		<form id="myForm" name="myForm"  action="AdminLoginCheck" method="post">
 			<h1>Admin LogIn<span class="fa fa-user-plus ml-2"></span> </h1>
-			<div class="alert alert-success" role="alert" id="successfully-registered">
-  				<strong>Success! </strong> Successfully registered.
-			</div>
-			
-		  	<div class="alert alert-danger" role="alert" id="wrong-details-alert">
-  				<strong>ERROR!</strong> Please enter your details properly.
-			</div>
+					<%
+							HttpSession ss = request.getSession();
+							Message msg = (Message)ss.getAttribute("message");
+							if(msg!=null){
+						%>
+							<div class="alert <%= msg.getCssClass() %>"  role="alert" id="wrong-details-alert">
+							  <%= msg.getContent() %>
+							  <br>
+							  New user?<a href="adminRegisterForm.jsp"><u>SignUp</u></a>
+							</div>
+						<%		
+							session.removeAttribute("message");
+							}
+						%>
 			
 			  <div class="row mt-4 mb-4">
 			    <div class="col form-group">
-			    	<label for="firstName">User Name</label>
-			    	<input type="text" class="form-control" placeholder="User name" name="userName" id="firstName" pattern="[a-zA-Z]*" oninvalid="setCustomValidity('Please enter alphabets only. ')"  maxlength="20" >
+			    	<label for="adminName">User Name</label>
+			    	<input type="text" class="form-control" placeholder="Admin name" name="adminName" id="adminName"   maxlength="20" required >
 			    </div>
 			  
-			  
+				<div class="col form-group">
+			    	<label for="adminEmail"> Email</label>
+			    	<input type="email" class="form-control" placeholder="Admin email" name="adminEmail" id="adminEmail"  maxlength="30" required >
+			    </div>
 			  </div>
-			  	
-				
 				<div class="mt-4 mb-4 form-group">
-			  	<label for="inputpassword">Password</label>
-	      		<input type="password" class="form-control" id="inputpassword" name="inputpassword" placeholder="Enter password"  maxlength="12">
-	      	
-	      		
+			  	<label for="adminPassword">Password</label>
+	      		<input type="password" class="form-control" id="adminPassword" name="adminPassword" placeholder="Enter password"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" oninvalid="setCustomValidity('Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters ')"  maxlength="12" required>
+			  	<small>Format :password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter</small>
 			  </div>
 			  
 			  
 			  
 		  
 		  	<button type="submit" class="btn btn-success " >LogIn <span class="fa fa-send-o"></span> </button>
+		  	<a href="adminRegisterForm.jsp">
+				<button type="button" class="btn btn-primary ">Sign Up<span class="fa fa-user-plus ml-2"></span></button>
+			</a>
 		</form>
 	 </div>
 	 
@@ -54,31 +67,7 @@
 	 
 	 <!-- JavaScript -->
 	 <script >
-	 function submitForm() {
-		 var firstName = document.forms["myForm"]["firstName"].value;
-		
-		
-		 var inputpassword = document.forms["myForm"]["inputpassword"].value;
-
-		 //var regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
-		 
-		 if(firstName == "" ||  inputpassword == "") {
-			//document.getElementById("wrong-details-alert").style.display = "block";
-			alert("Please enter the details properly");
-		 }
-		 else {
-			 alert("Successfully registered");
-			 //document.getElementById("successfully-registered").style.display = "block";
-		 }
-		 
-		/* else if(!regName.test(firstName) || !regName.test(lastName)){
-			 //alert("Invalid name");
-			 document.getElementById("invalid-name").style.display = "block";
-			}*/
-		 
-		 
-	 }
-	 
+	
 	 </script>
 
 	 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

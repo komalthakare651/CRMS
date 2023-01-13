@@ -54,7 +54,7 @@ h1,h2,h5{
 	background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
 }
 .portal-pngs{
-
+	max-width: 100px;
 }
 .card{
 	border-radius: 10px;

@@ -24,9 +24,9 @@ h1{
 	font-family: Syne;
 	font-weight: 700;
 }
-.alert-danger, .alert-success{
-	display: none;
-}
+/* .alert-danger, .alert-success{
+	display: block;
+} */
 strong {
 	font-weight: 600;
 }
